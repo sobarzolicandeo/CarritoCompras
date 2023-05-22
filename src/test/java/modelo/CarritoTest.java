@@ -54,7 +54,7 @@ public class CarritoTest {
         String result = instance.getNombres();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        if(!result.equals(expResult)) {
+        if(!result.equals("Prod. 4")) {
             fail("ERROR: Se esperaba el valor Producto 1");
     }
 }
