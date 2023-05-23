@@ -50,12 +50,6 @@ public class Controlador extends HttpServlet {
         
         switch (accion) {
             case "Empleado":
-                
-                switch (menu) {
-                case "Listar":
-                    List lista = edao.listar();
-                    request.setAttribute("empleados", lista);
-                    break;
                 case "Agregar":
                     String rut = request.getParameter("txtRut");
                     String nom = request.getParameter("txtNombres");
@@ -68,8 +62,13 @@ public class Controlador extends HttpServlet {
                     em.setEstado(est);
                     em.setUser(user);
                     edao.agregar(em);
-                    request.getRequestDispatcher("Controlador?accion=Empleado&menu=Listar").forward(request, response);
+                    request.getRequestDispatcher("Controlador?accion=Empleado&menu=Listar").forward(request, response);  switch (menu) {
+                case "Listar":
+                    List lista = edao.listar();
+                    request.setAttribute("empleados", lista);
                     break;
+                
+                   
                 case "Editar":
                     ide = Integer.parseInt(request.getParameter("id"));
                     Empleado e = edao.listarId(ide);
@@ -119,11 +118,11 @@ public class Controlador extends HttpServlet {
                     request.setAttribute("productos", lista);
                     break;
                 case "Agregar":
-                    String nom = request.getParameter("txtNombre");
+                    String nom1 = request.getParameter("txtNombre");
                     String des = request.getParameter("txtDescrip");
                     double precio = Double.parseDouble(request.getParameter("txtPrecio"));
                     int stock = Integer.parseInt(request.getParameter("txtStock"));
-                    p.setNombres(nom);
+                    p.setNombres(nom1);
                     p.setDescripcion(des);
                     p.setPrecio(precio);
                     p.setStock(stock);
@@ -173,7 +172,8 @@ public class Controlador extends HttpServlet {
                 int idp = Integer.parseInt(request.getParameter("id"));
                 p = pdao.listarId(idp);
                 item = item + 1;
-                Carrito car = new Carrito();
+                Carrito car;
+                car = new Carrito();
                 car.setItem(item);
                 car.setIdProducto(p.getId());
                 car.setNombres(p.getNombres());

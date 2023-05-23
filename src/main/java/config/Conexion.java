@@ -1,9 +1,28 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package config;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+
+public class Conexion {
+    private Connection con;
+    private String url = "jdbc:mysql://localhost:3306/bdcarritocompras";
+    private String user = "root";
+    private String pass = "";
+
+    public Connection getConnection() {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            con = DriverManager.getConnection(url, user, pass);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return con;
+    }
+}
+
+
+
+/*package config;
 
 import com.mysql.jdbc.Connection;
 import java.sql.DriverManager;
@@ -12,7 +31,7 @@ import java.sql.DriverManager;
  *
  * @author docencia
  */
-public class Conexion {
+/*public class Conexion {
     Connection con;
     String url = "jdbc:mysql://localhost:3306/bdcarritocompras";
     String user = "root";
@@ -26,3 +45,4 @@ public class Conexion {
         return con;
     }
 }
+ */
