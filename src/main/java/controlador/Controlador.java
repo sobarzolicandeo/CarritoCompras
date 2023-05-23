@@ -73,7 +73,6 @@ public class Controlador extends HttpServlet {
                     ide = Integer.parseInt(request.getParameter("id"));
                     Empleado e = edao.listarId(ide);
                     request.setAttribute("empleado", e);
-                    request.getRequestDispatcher("Controlador?accion=Empleado&menu=Listar").forward(request, response);
                     break;
                 case "Actualizar":
                     String rut1 = request.getParameter("txtRut");
@@ -88,8 +87,7 @@ public class Controlador extends HttpServlet {
                     em.setUser(user1);
                     em.setId(ide);
                     edao.actualizar(em);
-                    request.getRequestDispatcher("Controlador?accion=Empleado&menu=Listar").forward(request, response);
-                    break;
+                   break;
                 case "Delete":
                     ide = Integer.parseInt(request.getParameter("id"));
                     edao.delete(ide);
@@ -111,7 +109,7 @@ public class Controlador extends HttpServlet {
                 
             case "Producto":
                 
-                //request.getRequestDispatcher("Controlador?accion=Producto&menu=Listar").forward(request, response);
+                
                 switch (menu) {
                 case "Listar":
                     List lista = pdao.listar();
