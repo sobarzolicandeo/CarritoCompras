@@ -116,13 +116,37 @@ public class Controlador extends HttpServlet {
                     p.setPrecio(precio);
                     p.setStock(stock);
                     pdao.agregar(p);
-                    request.getRequestDispatcher("Controlador?accion=Producto&menu=Listar").forward(request, response);
+                    
                     break;
                 case "Editar":
                     ide = Integer.parseInt(request.getParameter("id"));
                     Producto pr = pdao.listarId(ide);
                     request.setAttribute("producto", pr);
-                    request.getRequestDispatcher("Controlador?accion=Producto&menu=Listar").forward(request, response);
+                
+                final String URL_PRODUCTO_LISTAR = "Controlador?accion=Producto&menu=Listar";
+
+               
+                    switch (accion) {
+                        case "GenerarCompra":
+                            for (int i = 0; i < listaCarrito.size(); i++) {
+                                Producto p = new Producto();
+                                int cantidad = listaCarrito.get(i).getCantidad();
+                                int idpr = listaCarrito.get(i).getIdProducto();
+                                ProductoDAO ao = new ProductoDAO();
+                                pr = ao.buscar(idpr);
+                                int sac = pr.getStock() - cantidad;
+                                ao.actualizarStock(idpr, sac);
+                                listaCarrito.clear();
+                            }
+                            break;
+
+                        default:
+                            request.setAttribute("productos", productos);
+                            request.getRequestDispatcher(URL_PRODUCTO_LISTAR).forward(request, response);
+                            break;
+                    }
+
+                    
                     break;
                 case "Actualizar":
                     ide = Integer.parseInt(request.getParameter("id"));
@@ -137,12 +161,12 @@ public class Controlador extends HttpServlet {
                     pr.setPrecio(pre);
                     pr.setStock(sto);
                     pdao.actualizar(pr);
-                    request.getRequestDispatcher("Controlador?accion=Producto&menu=Listar").forward(request, response);
+                    
                     break;
                 case "Delete":
                   ide = Integer.parseInt(request.getParameter("id"));
                     pdao.delete(ide);
-                    request.getRequestDispatcher("Controlador?accion=Producto&menu=Listar").forward(request, response);
+                    
                     break;
                 default:
                     throw new AssertionError();
