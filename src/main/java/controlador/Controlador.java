@@ -88,19 +88,10 @@ public class Controlador extends HttpServlet {
                     em.setId(ide);
                     edao.actualizar(em);
                    break;
-                case "Delete":
-                    ide = Integer.parseInt(request.getParameter("id"));
-                    edao.delete(ide);
-                    request.getRequestDispatcher("Controlador?accion=Empleado&menu=Listar").forward(request, response);
-                    break;
                 default:
                     throw new AssertionError();
             }
-            
-       
-        
-                
-                
+
                request.getRequestDispatcher("Empleado.jsp").forward(request, response);
                break;
             case "Principal":
@@ -129,8 +120,8 @@ public class Controlador extends HttpServlet {
                     break;
                 case "Editar":
                     ide = Integer.parseInt(request.getParameter("id"));
-                    Producto p = pdao.listarId(ide);
-                    request.setAttribute("producto", p);
+                    Producto pr = pdao.listarId(ide);
+                    request.setAttribute("producto", pr);
                     request.getRequestDispatcher("Controlador?accion=Producto&menu=Listar").forward(request, response);
                     break;
                 case "Actualizar":
@@ -139,17 +130,17 @@ public class Controlador extends HttpServlet {
                     String descrip = request.getParameter("txtDescrip");
                     double pre = Double.parseDouble(request.getParameter("txtPrecio"));
                     int sto = Integer.parseInt(request.getParameter("txtStock"));
-                    p = new Producto();
-                    p.setId(ide);
-                    p.setNombres(nombre);
-                    p.setDescripcion(descrip);
-                    p.setPrecio(pre);
-                    p.setStock(sto);
-                    pdao.actualizar(p);
+                    pr = new Producto();
+                    pr.setId(ide);
+                    pr.setNombres(nombre);
+                    pr.setDescripcion(descrip);
+                    pr.setPrecio(pre);
+                    pr.setStock(sto);
+                    pdao.actualizar(pr);
                     request.getRequestDispatcher("Controlador?accion=Producto&menu=Listar").forward(request, response);
                     break;
                 case "Delete":
-                    ide = Integer.parseInt(request.getParameter("id"));
+                  ide = Integer.parseInt(request.getParameter("id"));
                     pdao.delete(ide);
                     request.getRequestDispatcher("Controlador?accion=Producto&menu=Listar").forward(request, response);
                     break;
@@ -167,7 +158,7 @@ public class Controlador extends HttpServlet {
                 break;
             case "Comprar":
                 totalPagar = 0;
-                int idp = Integer.parseInt(request.getParameter("id"));
+                int id = Integer.parseInt(request.getParameter("id"));
                 p = pdao.listarId(idp);
                 item = item + 1;
                 Carrito car;
