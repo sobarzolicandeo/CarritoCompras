@@ -116,37 +116,13 @@ public class Controlador extends HttpServlet {
                     p.setPrecio(precio);
                     p.setStock(stock);
                     pdao.agregar(p);
-                    
+                    request.getRequestDispatcher("Controlador?accion=Producto&menu=Listar").forward(request, response);
                     break;
                 case "Editar":
                     ide = Integer.parseInt(request.getParameter("id"));
                     Producto pr = pdao.listarId(ide);
                     request.setAttribute("producto", pr);
-                
-                final String URL_PRODUCTO_LISTAR = "Controlador?accion=Producto&menu=Listar";
-
-               
-                    switch (accion) {
-                        case "GenerarCompra":
-                            for (int i = 0; i < listaCarrito.size(); i++) {
-                                Producto p = new Producto();
-                                int cantidad = listaCarrito.get(i).getCantidad();
-                                int idpr = listaCarrito.get(i).getIdProducto();
-                                ProductoDAO ao = new ProductoDAO();
-                                pr = ao.buscar(idpr);
-                                int sac = pr.getStock() - cantidad;
-                                ao.actualizarStock(idpr, sac);
-                                listaCarrito.clear();
-                            }
-                            break;
-
-                        default:
-                            request.setAttribute("productos", productos);
-                            request.getRequestDispatcher(URL_PRODUCTO_LISTAR).forward(request, response);
-                            break;
-                    }
-
-                    
+                    request.getRequestDispatcher("Controlador?accion=Producto&menu=Listar").forward(request, response);
                     break;
                 case "Actualizar":
                     ide = Integer.parseInt(request.getParameter("id"));
@@ -161,12 +137,12 @@ public class Controlador extends HttpServlet {
                     pr.setPrecio(pre);
                     pr.setStock(sto);
                     pdao.actualizar(pr);
-                    
+                    request.getRequestDispatcher("Controlador?accion=Producto&menu=Listar").forward(request, response);
                     break;
                 case "Delete":
                   ide = Integer.parseInt(request.getParameter("id"));
                     pdao.delete(ide);
-                    
+                    request.getRequestDispatcher("Controlador?accion=Producto&menu=Listar").forward(request, response);
                     break;
                 default:
                     throw new AssertionError();
@@ -185,16 +161,16 @@ public class Controlador extends HttpServlet {
                 int id = Integer.parseInt(request.getParameter("id"));
                 p = pdao.listarId(idp);
                 item = item + 1;
-                Carrito carr;
-                carr = new Carrito();
-                carr.setItem(item);
-                carr.setIdProducto(p.getId());
-                carr.setNombres(p.getNombres());
-                carr.setDescripcion(p.getDescripcion());
-                carr.setPrecioCompra(p.getPrecio());
-                carr.setCantidad(cantidad);
-                carr.setSubTotal(cantidad * p.getPrecio());
-                listaCarrito.add(carr);
+                Carrito car;
+                car = new Carrito();
+                car.setItem(item);
+                car.setIdProducto(p.getId());
+                car.setNombres(p.getNombres());
+                car.setDescripcion(p.getDescripcion());
+                car.setPrecioCompra(p.getPrecio());
+                car.setCantidad(cantidad);
+                car.setSubTotal(cantidad * p.getPrecio());
+                listaCarrito.add(car);
                 for (int i = 0; i < listaCarrito.size(); i++) {
                     totalPagar += listaCarrito.get(i).getSubTotal();
                 }
@@ -238,7 +214,9 @@ public class Controlador extends HttpServlet {
                 request.setAttribute("totalPagar", totalPagar);
                 request.getRequestDispatcher("carrito.jsp").forward(request, response);
                 break;
+                
             case "GenerarCompra":
+              
                 for (int i = 0; i < listaCarrito.size(); i++) {
                     Producto pr = new Producto();
                     int cantidad = listaCarrito.get(i).getCantidad();
@@ -249,14 +227,10 @@ public class Controlador extends HttpServlet {
                     ao.actualizarStock(idpr, sac);
                     listaCarrito.clear();
                 }
-                break;
 
-                default:
-                    request.setAttribute("productos", productos);
-                    request.getRequestDispatcher("index.jsp").forward(request, response);
-                    break;
-        
-
+            default:
+                request.setAttribute("productos", productos);
+                request.getRequestDispatcher("index.jsp").forward(request, response);
         }
 
     }
